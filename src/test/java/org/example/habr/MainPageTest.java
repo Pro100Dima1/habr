@@ -1,9 +1,6 @@
 package org.example.habr;
 
 import org.junit.jupiter.api.*;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -11,6 +8,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.time.Duration;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MainPageTest {
     private WebDriver driver;
@@ -22,17 +21,17 @@ public class MainPageTest {
         options.addArguments("--remote-allow-origins=*");
         driver = new ChromeDriver(options);
         driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
         driver.get("https://www.habr.com/");
-
     }
 
     @AfterEach
     public void tearDown() {
         driver.quit();
     }
+
     @AfterAll
-    public static void endingText(){
+    public static void endingText() {
         System.out.println("Тесты завершены");
     }
 
@@ -42,7 +41,6 @@ public class MainPageTest {
 
         WebElement searchButton = driver.findElement(By.xpath("//nav/*[contains(text(),'Маркетинг')]"));
         searchButton.click();
-
         assertTrue(driver.findElement(By.cssSelector(".tm-section-name")).isDisplayed(), "Иконка не найдена");
     }
 
@@ -50,10 +48,11 @@ public class MainPageTest {
     @DisplayName("Тест по поиску Ответы на все вопросы об IT в dropdown")
     public void qAndA() {
 
-        WebElement dropDownList = driver.findElement(By.xpath("//*[contains(@class,'tm-svg-img tm-header__icon tm-header__icon_dropdown')]"));
+        WebElement dropDownList = driver.findElement(By.xpath("//button[contains(@class,'tm-header__icon_dropdown')]"));
         dropDownList.click();
-
-        assertTrue(driver.findElement(By.xpath("//*[contains(text(), 'Ответы на любые вопросы об IT')]")).isDisplayed(), "Ответов нет");
+        assertTrue(driver.findElement(By.xpath("//a//*[contains(text(), 'Ответы на любые вопросы об IT')]")).isDisplayed(),
+                "Ответов нет");
     }
+
 
 }
